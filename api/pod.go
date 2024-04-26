@@ -20,7 +20,7 @@ type PodsOutput struct {
 }
 
 func Pod(api huma.API, podService *ks.KubeService) {
-	huma.Get(api, "/pods", func(ctx context.Context, input *EmptyInput) (*PodsOutput, error) {
+	huma.Get(api, "/api/pods", func(ctx context.Context, input *EmptyInput) (*PodsOutput, error) {
 		pods, err := podService.Pods(metav1.NamespaceAll)
 		if err != nil {
 			return nil, huma.NewError(http.StatusInternalServerError, "Failed to list pods")

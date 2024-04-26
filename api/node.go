@@ -18,7 +18,7 @@ type NodesOutput struct {
 }
 
 func Node(api huma.API, nodeService *ks.KubeService) {
-	huma.Get(api, "/nodes", func(ctx context.Context, input *EmptyInput) (*NodesOutput, error) {
+	huma.Get(api, "/api/nodes", func(ctx context.Context, input *EmptyInput) (*NodesOutput, error) {
 		nodes, err := nodeService.Nodes(metav1.NamespaceAll)
 		if err != nil {
 			return nil, huma.NewError(http.StatusInternalServerError, "Failed to list nodes")

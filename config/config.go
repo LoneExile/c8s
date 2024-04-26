@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/spf13/viper"
 )
@@ -20,7 +20,7 @@ func initConfig() {
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %w", err))
+		log.Fatalf("fatal error config file: %v", err)
 	}
 }
 
@@ -31,7 +31,7 @@ func GetConfig() Config {
 	var C Config
 	err := viper.Unmarshal(&C)
 	if err != nil {
-		fmt.Printf("Unable to decode into struct, %v", err)
+		log.Fatalf("Unable to decode into struct, %v", err)
 	}
 	return C
 }

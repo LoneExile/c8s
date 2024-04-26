@@ -46,10 +46,11 @@ func main() {
 	router.Group(func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.NotFound(handlers.NewNotFoundHandler().ServeHTTP)
-		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			http.Redirect(w, r, "/app", http.StatusMovedPermanently)
-		})
-		r.Get("/app", handlers.NewHomeHandler().ServeHTTP)
+		// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		// 	http.Redirect(w, r, "/app", http.StatusMovedPermanently)
+		// })
+		r.Get("/", handlers.NewHomeHandler().ServeHTTP)
+		r.Get("/pods", handlers.NewPodList(kubeService).ServeHTTP)
 	})
 
 	srv := &http.Server{
