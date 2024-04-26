@@ -1,0 +1,3 @@
+Port: :2261
+KubeConfig:
+  InsecureSkipVerify: false

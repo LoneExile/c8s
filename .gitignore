@@ -1,0 +1,9 @@
+bin
+tmp
+tailwindcss
+node_modules
+README-*
+static/css/style*
+static/script/htmx.min.js
+static/script/response-targets.js
+

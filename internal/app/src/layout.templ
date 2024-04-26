@@ -1,0 +1,34 @@
+package templates
+
+import (
+	"os"
+	"c8s/internal/app/src/components"
+)
+
+templ header(title string) {
+	<head>
+		<title>{ title }</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<script src="static/script/htmx.min.js"></script>
+		<script src="static/script/response-targets.js"></script>
+		if os.Getenv("env") == "production" {
+			<link rel="stylesheet" href="static/css/style.min.css"/>
+		} else {
+			<link rel="stylesheet" href="static/css/style.css"/>
+		}
+	</head>
+}
+
+templ Layout(contents templ.Component, title string) {
+	<html data-theme="cupcake">
+		@header(title)
+		<body class="flex flex-col h-full">
+			@components.Nav()
+			<main class="flex-1 container ">
+				@contents
+			</main>
+			@components.Footer()
+		</body>
+	</html>
+}
