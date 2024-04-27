@@ -68,6 +68,7 @@ func main() {
 		}
 	}()
 
+	log.Printf("Environment: %s\n", os.Getenv("env"))
 	log.Printf("Server started on %s\n", conf.Port)
 	<-killSig
 
