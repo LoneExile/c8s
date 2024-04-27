@@ -51,6 +51,7 @@ func main() {
 		// })
 		r.Get("/", handlers.NewHomeHandler().ServeHTTP)
 		r.Get("/pods", handlers.NewPodList(kubeService).ServeHTTP)
+		r.Get("/c/pods", handlers.NewPodList(kubeService).Component)
 	})
 
 	srv := &http.Server{

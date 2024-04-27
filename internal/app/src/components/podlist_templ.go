@@ -25,16 +25,18 @@ func readyContainers(pod *v1.Pod) int {
 	return count
 }
 
-//	func statusClass(phase string) string {
-//		switch phase {
-//		case "Running":
-//			return "bg-green-200"
-//		case "Pending":
-//			return "bg-yellow-200"
-//		default:
-//			return "bg-red-200"
-//		}
-//	}
+// func statusClass(phase string) string {
+// 	switch phase {
+// 	case "Running":
+// 		return "bg-green-200"
+// 	case "Pending":
+// 		return "bg-yellow-200"
+// 	default:
+// 		return "bg-red-200"
+// 	}
+// }
+
+// hx-trigger="every 1000ms, changed"
 func PodList(pods *v1.PodList) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -48,7 +50,7 @@ func PodList(pods *v1.PodList) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"overflow-x-auto\"><table class=\"table\"><!-- head --><thead><tr><th>Namespace</th><th>Pod Name</th><th>Ready</th><!-- (1/2) --><th>Status</th><!-- Running, Pending, Not Ready --><th></th></tr></thead> <tbody>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"podList\" class=\"overflow-x-hidden\"><div class=\"w-full flex flex-col\"><button class=\"btn btn-sm\" hx-target=\"#podList\" hx-swap=\"outerHTML\" hx-get=\"/c/pods\">Refresh</button></div><table class=\"table\"><!-- head --><thead><tr><th>Namespace</th><th>Pod Name</th><th>Ready</th><th>Status</th><th></th></tr></thead> <tbody>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -60,7 +62,7 @@ func PodList(pods *v1.PodList) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(pod.Namespace)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 44, Col: 25}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 57, Col: 25}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -73,7 +75,7 @@ func PodList(pods *v1.PodList) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(pod.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 45, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 58, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -86,7 +88,7 @@ func PodList(pods *v1.PodList) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(readyContainers(&pod)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 47, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 60, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -99,7 +101,7 @@ func PodList(pods *v1.PodList) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(len(pod.Status.ContainerStatuses)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 47, Col: 96}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/app/src/components/podlist.templ`, Line: 60, Col: 96}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -125,7 +127,7 @@ func PodList(pods *v1.PodList) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<td class=\"\"><div class=\"flex flex-col items-center justify-center mx-auto w-full\"><details class=\"dropdown\"><summary class=\"m-1 btn btn-sm\">⚙️ action</summary><ul class=\"p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52\"><li><a>👶 Restart</a></li><li><a>✏️ Image Tag</a></li><li><a>💻 Exec</a></li></ul></details></div></td></tr>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<td class=\"\"><div class=\"flex flex-col items-center justify-center mx-auto w-full\"><details class=\"dropdown dropdown-end\"><summary class=\"m-1 btn btn-sm\">⚙️ action</summary><ul class=\"p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52\"><li><a>👶 Restart</a></li><li><a>✏️ Image Tag</a></li><li><a>💻 Exec</a></li></ul></details></div></td></tr>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

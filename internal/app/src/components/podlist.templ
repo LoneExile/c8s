@@ -25,16 +25,29 @@ func readyContainers(pod *v1.Pod) int {
 // 		return "bg-red-200"
 // 	}
 // }
+
+// hx-trigger="every 1000ms, changed"
 templ PodList(pods *v1.PodList) {
-	<div class="overflow-x-auto">
+	<div
+		id="podList"
+		class="overflow-x-hidden"
+	>
+		<div class="w-full flex flex-col">
+			<button
+				class="btn btn-sm"
+				hx-target="#podList"
+				hx-swap="outerHTML"
+				hx-get="/c/pods"
+			>Refresh</button>
+		</div>
 		<table class="table">
 			<!-- head -->
 			<thead>
 				<tr>
 					<th>Namespace</th>
 					<th>Pod Name</th>
-					<th>Ready</th> <!-- (1/2) -->
-					<th>Status</th> <!-- Running, Pending, Not Ready -->
+					<th>Ready</th>
+					<th>Status</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -55,7 +68,7 @@ templ PodList(pods *v1.PodList) {
 						}
 						<td class="">
 							<div class="flex flex-col items-center justify-center mx-auto w-full">
-								<details class="dropdown">
+								<details class="dropdown dropdown-end">
 									<summary class="m-1 btn btn-sm">⚙️ action</summary>
 									<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
 										<li><a>👶 Restart</a></li>
