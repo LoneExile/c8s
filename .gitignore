@@ -6,4 +6,4 @@ README-*
 static/css/style*
 static/script/htmx.min.js
 static/script/response-targets.js
-
+static/~partytown/*

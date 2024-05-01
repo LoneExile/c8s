@@ -7,6 +7,7 @@ install:
 	curl https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js --create-dirs -o ./static/script/htmx.min.js
 	curl https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js --create-dirs -o ./static/script/response-targets.js
 	pnpm install
+	npx partytown copylib static/~partytown
 	make tailwind
 # npx tailwindcss -i tailwind.css -o output.css
 
@@ -32,7 +33,6 @@ templ-watch:
 	
 .PHONY: dev
 dev:
-	make tailwind
 	go build -o ./tmp/c8s ./cmd/c8s/main.go && air
 
 .PHONY: build
