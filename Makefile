@@ -7,7 +7,7 @@ install:
 	curl https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js --create-dirs -o ./static/script/htmx.min.js
 	curl https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js --create-dirs -o ./static/script/response-targets.js
 	pnpm install
-	npx partytown copylib static/~partytown
+	npx @builder.io/partytown copylib static/~partytown -y
 	make tailwind
 # npx tailwindcss -i tailwind.css -o output.css
 
