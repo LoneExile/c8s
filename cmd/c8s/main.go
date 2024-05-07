@@ -3,6 +3,7 @@ package main
 import (
 	"c8s/config"
 	"c8s/internal/app/handlers"
+	saws "c8s/internal/service/cloud/aws"
 	"c8s/pkg/kube"
 	"context"
 	"errors"
@@ -24,6 +25,7 @@ import (
 
 func main() {
 	conf := config.GetConfig()
+	saws.ListInstances()
 
 	kubeClient, err := kube.NewClient(conf)
 	if err != nil {
@@ -55,7 +57,7 @@ func main() {
 	})
 
 	srv := &http.Server{
-		Addr:    conf.Port,
+		Addr:    conf.App.Port,
 		Handler: router,
 	}
 
@@ -70,7 +72,7 @@ func main() {
 	}()
 
 	log.Printf("Environment: %s\n", os.Getenv("env"))
-	log.Printf("Server started on %s\n", conf.Port)
+	log.Printf("Server started on %s\n", conf.App.Port)
 	<-killSig
 
 	log.Println("Shutting down server")

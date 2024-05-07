@@ -7,12 +7,23 @@ import (
 )
 
 type KubeConfig struct {
+	ConfigPath         string
+	ProxyUrl           string
 	InsecureSkipVerify bool
 }
 
+type Application struct {
+	Port string
+}
+
+type AWS struct {
+	Profile string
+}
+
 type Config struct {
-	Port       string
+	App        Application
 	KubeConfig KubeConfig
+	AWS        AWS
 }
 
 func initConfig() {
