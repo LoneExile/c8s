@@ -25,7 +25,14 @@ import (
 
 func main() {
 	conf := config.GetConfig()
-	saws.ListInstances()
+	ssmClient, err := saws.NewSSMClient(conf)
+	if err != nil {
+		log.Fatalf("Failed to initialize SSM client: %v", err)
+	}
+	err = ssmClient.KubeProxyOpen()
+	if err != nil {
+		log.Fatalf("Failed to open KubeProxy: %v", err)
+	}
 
 	kubeClient, err := kube.NewClient(conf)
 	if err != nil {
@@ -35,16 +42,13 @@ func main() {
 
 	router := chi.NewRouter()
 
-	// Set up Huma API
 	api := humachi.New(router, huma.DefaultConfig("Kubernetes API", "1.0.0"))
 	route.Pod(api, kubeService)
 	route.Node(api, kubeService)
 
-	// Set up static file server
 	fileServer := http.FileServer(http.Dir("./static"))
 	router.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
-	// Set up other routes
 	router.Group(func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.NotFound(handlers.NewNotFoundHandler().ServeHTTP)
@@ -73,11 +77,21 @@ func main() {
 
 	log.Printf("Environment: %s\n", os.Getenv("env"))
 	log.Printf("Server started on %s\n", conf.App.Port)
+
+	err = ssmClient.ForwordKubePort()
+	if err != nil {
+		log.Fatalf("Failed to forward port: %v", err)
+	}
+
 	<-killSig
 
 	log.Println("Shutting down server")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
+	if err := ssmClient.KubeProxyClose(); err != nil {
+		log.Fatalf("Failed to close KubeProxy: %v", err)
+	}
 
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("Failed to shutdown server: %v", err)

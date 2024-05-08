@@ -17,7 +17,7 @@ type Ec2InstanceInfo struct {
 }
 
 func NewEC2Client(conf conf.Config) (*AWSClients, error) {
-	cfg := cfg(conf)
+	cfg := Cfg(conf)
 	ec2Client := ec2.NewFromConfig(cfg)
 
 	return &AWSClients{

@@ -12,20 +12,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 )
 
-// TODO: add default, check config file => ENV => ~/.aws/config
-// - check if region is valid
-var (
-	Region  string
-	Profile string
-)
-
 type AWSClients struct {
 	EC2 *ec2.Client
 	RDS *rds.Client
 	SSM *ssm.Client
 }
 
-func cfg(conf conf.Config) aws.Config {
+func Cfg(conf conf.Config) aws.Config {
 	profile := conf.AWS.Profile
 
 	cfg, err := config.LoadDefaultConfig(context.TODO(),

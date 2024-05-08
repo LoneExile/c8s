@@ -17,7 +17,10 @@ type Application struct {
 }
 
 type AWS struct {
-	Profile string
+	Profile    string
+	InstanceID string
+	LocalPort  int
+	RemotePort int
 }
 
 type Config struct {
