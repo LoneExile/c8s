@@ -15,17 +15,6 @@ func readyContainers(pod *v1.Pod) int {
 	return count
 }
 
-// func statusClass(phase string) string {
-// 	switch phase {
-// 	case "Running":
-// 		return "bg-green-200"
-// 	case "Pending":
-// 		return "bg-yellow-200"
-// 	default:
-// 		return "bg-red-200"
-// 	}
-// }
-
 // hx-trigger="every 1000ms, changed"
 templ PodList(pods *v1.PodList) {
 	<div
@@ -60,9 +49,11 @@ templ PodList(pods *v1.PodList) {
 							{ strconv.Itoa(readyContainers(&pod)) }/{ strconv.Itoa(len(pod.Status.ContainerStatuses)) }
 						</td>
 						if pod.Status.Phase == "Running" {
-							<td class="bg-green-200">Ready</td>
+							<td class="bg-blue-200">Ready</td>
 						} else if pod.Status.Phase == "Pending" {
 							<td class="bg-yellow-200">Pending</td>
+						} else if pod.Status.Phase == "Succeeded" {
+							<td class="bg-green-200">Succeeded</td>
 						} else {
 							<td class="bg-red-200">Not Ready</td>
 						}

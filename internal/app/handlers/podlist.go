@@ -10,18 +10,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type PodList struct {
+type Client struct {
 	kubeService *ks.KubeService
 }
 
-func NewPodList(kubeService *ks.KubeService) *PodList {
-	p := &PodList{
+func NewPodList(kubeService *ks.KubeService) *Client {
+	p := &Client{
 		kubeService: kubeService,
 	}
 	return p
 }
 
-func (h *PodList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *Client) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	pods, err := h.kubeService.Pods(metav1.NamespaceAll)
 	if err != nil {
@@ -38,7 +38,7 @@ func (h *PodList) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *PodList) Component(w http.ResponseWriter, r *http.Request) {
+func (h *Client) Component(w http.ResponseWriter, r *http.Request) {
 
 	pods, err := h.kubeService.Pods(metav1.NamespaceAll)
 	if err != nil {

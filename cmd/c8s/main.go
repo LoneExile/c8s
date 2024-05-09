@@ -51,6 +51,7 @@ func main() {
 	api := humachi.New(router, huma.DefaultConfig("Kubernetes API", "1.0.0"))
 	route.Pod(api, kubeService)
 	route.Node(api, kubeService)
+	route.RestartDeployment(api, kubeService)
 
 	fileServer := http.FileServer(http.Dir("./static"))
 	router.Handle("/static/*", http.StripPrefix("/static/", fileServer))
