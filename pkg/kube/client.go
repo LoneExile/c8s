@@ -21,7 +21,7 @@ func NewClient(conf conf.Config) (*Client, error) {
 		return nil, err
 	}
 
-	if conf.KubeConfig.ProxyUrl != "" {
+	if conf.Mode != "local" {
 		proxyURL, err := url.Parse(conf.KubeConfig.ProxyUrl)
 		if err != nil {
 			return nil, err

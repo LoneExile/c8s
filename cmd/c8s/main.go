@@ -23,15 +23,21 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
+var ssmClient *saws.SSMClient
+var err error
+
 func main() {
 	conf := config.GetConfig()
-	ssmClient, err := saws.NewSSMClient(conf)
-	if err != nil {
-		log.Fatalf("Failed to initialize SSM client: %v", err)
-	}
-	err = ssmClient.KubeProxyOpen()
-	if err != nil {
-		log.Fatalf("Failed to open KubeProxy: %v", err)
+
+	if conf.Mode == "aws" {
+		ssmClient, err = saws.NewSSMClient(conf)
+		if err != nil {
+			log.Fatalf("Failed to initialize SSM client: %v", err)
+		}
+		err = ssmClient.KubeProxyOpen()
+		if err != nil {
+			log.Fatalf("Failed to open KubeProxy: %v", err)
+		}
 	}
 
 	kubeClient, err := kube.NewClient(conf)
@@ -78,9 +84,11 @@ func main() {
 	log.Printf("Environment: %s\n", os.Getenv("env"))
 	log.Printf("Server started on %s\n", conf.App.Port)
 
-	err = ssmClient.ForwordKubePort()
-	if err != nil {
-		log.Fatalf("Failed to forward port: %v", err)
+	if conf.Mode == "aws" {
+		err = ssmClient.ForwordKubePort()
+		if err != nil {
+			log.Fatalf("Failed to forward port: %v", err)
+		}
 	}
 
 	<-killSig

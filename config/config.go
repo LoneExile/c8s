@@ -27,6 +27,7 @@ type Config struct {
 	App        Application
 	KubeConfig KubeConfig
 	AWS        AWS
+	Mode       string
 }
 
 func initConfig() {
